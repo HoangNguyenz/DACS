@@ -1,0 +1,221 @@
+
+@model HocAspMVC4_Test.Models.Blog.CreatePostModel
+
+@using HocAspMVC4_Test.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    ViewData["Title"] = "Cập nhật bài viết";
+    var list = ViewData["categories"] as MultiSelectList;
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="PostId" />
+            <div class="form-group">
+                <label asp-for="CategoryIDs" class="control-label"></label>
+                <select asp-for="CategoryIDs" multiple="multiple" asp-items="list" class="w-100"> </select>
+                <span asp-validation-for="CategoryIDs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+
+
+            <input class="collapse"
+                   type="file"
+                   id="selectfileupload"
+                   onchange="AutoUploadPhoto()" />
+
+            <span class="btn btn-primary" onclick="ClickButtonUpload()">Upload hình ảnh</span>
+            <div id="box-photo-upload" class="d-flex flex-wrap photo-upload" data-id="@Model.PostId"></div>
+
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Published" /> @Html.DisplayNameFor(model => model.Published)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+@section Scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/multiple-select/1.2.3/multiple-select.min.js" integrity="sha512-VNtDkcpQUSFRARraRlhAnATQL9G3NbFefLfDBHJnXKYMZgAhBTMAEscjgPzAljCUQjLHx5Yk3JaIMaF1RvFYIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
+
+    <script>$("#CategoryIDs").multipleSelect({
+            selectAll: false,
+            keepOpen: false,
+            isOpen: false,
+        });</script>
+
+
+    <script>
+        //khi có onchange của phần từ input file
+        function AutoUploadPhoto()
+        {
+
+            var formData = new FormData(); //tạo đối tượng chứa dữ liệu
+
+            //lấy id của post
+            var id = $("#box-photo-upload").data("id");
+
+            formData.append("id", id); //chèn id vào formData
+
+            var sofile = document.getElementById("selectfileupload").files.length; //lấy độ dài
+
+            if (sofile == 0) return;
+
+            var fileData = document.getElementById("selectfileupload").files[0]; //lấy file đầu tiên dc chọn
+            //tạo 1 cặp key-value: key: FileUpload, value là fileData
+            formData.append("FileUpload", fileData) 
+
+
+            var urlUpload = "@Url.Action("UpLoadPhotoApi")";
+
+            $.ajax({
+                data: formData,
+                cache: false,
+                url: urlUpload,
+                type: "POST",
+                contentType: false, //không đặt kiểu nội dung
+                processData: false,
+                success: function (data) {
+                    LoadPhotos();  //thành công gọi hàm LoadPhotos() để tải lại danh sách ảnh.
+                }
+            });
+        }
+
+        //Được gọi khi người dùng nhấn vào nút "Upload hình ảnh".
+        //Sự kiện này sẽ kích hoạt sự kiện click của phần tử input file ẩn để chọn tệp tin ảnh.
+        function ClickButtonUpload()
+        {
+            $("#selectfileupload").click();
+        }
+
+        function setClickDeletePhoto()
+        {
+            //áp dụng sự kiện "click" cho tất cả các phần tử <span> trong các phần tử có lớp "photodetail"
+            //nằm trong phần tử có id "box-photo-upload".
+            $("#box-photo-upload .photodetail span").click(function () {
+
+                if (confirm("Có chắc chắn xóa ảnh này?") != true) return;
+
+                //lấy id của ảnh của từng nút span trong loadphotos
+                var spanButton = $(this);
+                var id = spanButton.data("id");
+
+                var formData = new FormData();
+                formData.append("id", id);
+
+                var urlDeletePhoto = "@Url.Action("DeletePhoto")";
+
+                $.ajax({
+                    data: formData,
+                    cache: false,
+                    url: urlDeletePhoto,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        LoadPhotos();
+                    }
+                });
+
+
+            });
+        }
+
+        // một yêu cầu AJAX được gửi đến máy chủ để lấy danh sách ảnh và đưa vào phần tử box-photo-upload
+        function LoadPhotos() {
+             //lấy id của post
+            var box = $("#box-photo-upload");
+            var PostID = box.data("id");
+            box.empty();
+
+            //tạo formdata
+            var formData = new FormData();
+            formData.append("id", PostID); //thêm id của post vào formData
+
+            var urlListPhoto = "@Url.Action("ListPhotos")"; //đường dẫn đến action ListPhotos
+
+            $.ajax({  //gọi api lấy danh sách ảnh
+                data: formData,
+                cache: false,
+                url: urlListPhoto,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    data.photos.forEach(function (item) {
+                        var e = $(
+                            '<div class="photodetail w-25 p-1">'
+                            + '<img class="w-100" src="'+ item.path +'" />'
+                            + '<span class="btn btn-danger" data-id="'+ item.id +'">Xóa ảnh</span></div>');
+                        box.append(e); //hiển thị trong #box-photo-upload
+                    });
+                    setClickDeletePhoto(); //thiết lập sự kiện xóa ảnh
+                }
+            });
+        }
+        $(document).ready(function () {
+            LoadPhotos();
+        });
+    </script>
+}
+
+@{
+    var summernote = new HocAspMVC4_Test.Models.Summernote("#Content")
+    {
+        height = 500
+    };
+}
+
+<partial name="_Summernote" model="summernote"></partial>
+
+
+@{
+    _AdminSidebarService.SetActive("Post", "Index", "Blog"); //controller - action - area
+}
+
+@section Sidebar{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}
+

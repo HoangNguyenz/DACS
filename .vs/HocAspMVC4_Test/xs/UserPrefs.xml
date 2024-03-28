@@ -1,0 +1,74 @@
+﻿<Properties NuGet.AddPackagesDialog.IncludePrerelease="True" StartupConfiguration="{97914D39-045E-4AF7-8540-B68D0554416D}|https">
+  <DisabledProjects>
+    <String>../Blog1/Blog1.csproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.ItemProperties.AppWebMovie PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.HocAspMVC4__Test PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.WebPhimVenom PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.ItemProperties.AppWebSucana PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Areas/Blog/Controllers/PostController.cs">
+    <Files>
+      <File FileName="Areas/Blog/Controllers/PostController.cs" Line="121" Column="35" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="HocAspMVC4_Test" expanded="True">
+            <Node name="AppWebSucana" selected="True" />
+            <Node name="HocAspMVC4_Test" expanded="True">
+              <Node name="Areas" expanded="True">
+                <Node name="AdminCP" expanded="True">
+                  <Node name="Controllers" expanded="True" />
+                  <Node name="Views" expanded="True">
+                    <Node name="AdminCP" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Blog" expanded="True">
+                  <Node name="Controllers" expanded="True" />
+                  <Node name="Models" expanded="True" />
+                  <Node name="Views" expanded="True">
+                    <Node name="Category" expanded="True" />
+                    <Node name="Comment" expanded="True" />
+                    <Node name="Post" expanded="True" />
+                    <Node name="ViewPost" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Contact" expanded="True">
+                  <Node name="Controllers" expanded="True" />
+                  <Node name="Models" expanded="True" />
+                  <Node name="Views" expanded="True" />
+                </Node>
+                <Node name="Identity" expanded="True">
+                  <Node name="Controllers" expanded="True" />
+                  <Node name="Models" expanded="True">
+                    <Node name="Role" expanded="True" />
+                  </Node>
+                  <Node name="Views" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="assets" expanded="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="Blog" expanded="True" />
+                <Node name="Product" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="js" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

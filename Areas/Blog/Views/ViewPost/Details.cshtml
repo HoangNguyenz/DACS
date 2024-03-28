@@ -1,0 +1,137 @@
+﻿
+
+@using HocAspMVC4_Test.Views.Shared.Components.CategorySidebar
+@using HocAspMVC4_Test.Models.Blog
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+@model Post
+
+@{
+    List<Category> categories = ViewBag.categories as List<Category>;
+    Category category = ViewBag.category as Category;
+    ViewData["Title"] = Model.Title;
+
+    IQueryable<Post> otherPosts = ViewBag.otherPosts as IQueryable<Post>;
+
+    IQueryable<Post> postmoi = ViewBag.postmoi as IQueryable<Post>;
+}
+
+@{
+    var srcImg = "/contents/nophoto.jpeg";
+    if (Model.Photos.Any())
+    {
+        srcImg = $"/contents/BlogPhoto/{Model.Photos.FirstOrDefault().FileName}";
+    }
+}
+
+
+<section class="post-header">
+    <div class="header-content post-container">
+        <!--Back to home-->
+        <a href="./index.html" class="back-home">Back to home</a>
+        <!--Title-->
+        <h1 class="header-title">@Model.Title</h1>
+        <!--Post image-->
+        <img src="@srcImg"
+             alt="" class="header-img">
+
+    </div>
+</section>
+
+
+
+@*Posts*@
+<section class="post-content  post-container ">
+    <!-- Comment form -->
+    <section class="post-content post-container">
+        <p class="post-text">@Html.Raw(Model.Content)</p>
+        <!-- Comment form -->
+        <div class="comment-form post-container">
+            <a class="btnComment" asp-area="Blog" asp-controller="Comment" asp-action="Create" asp-route-postId="@Model.PostId" asp-route-authorId="@User.Identity.Name">
+                Bình luận ngay
+            </a>
+        </div>
+    </section>
+
+</section>
+
+<section class="otherpost-box post-container">
+    <h4>Bình luận</h4>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="otherpost-box2">
+            <div style="color: #0768ea" class="comment-author"><span>@Html.Raw("@")</span>@comment.Author.UserName</div>
+            <div class="comment-content">@comment.Content</div>
+            <div class="comment-date">@comment.DateCreated.ToString("dd/MM/yyyy HH:mm")</div>
+            @if (User.IsInRole("Admin"))
+            {
+                <form method="post" asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.CommentId">
+                    <button type="submit" class="btnDeleteComment">Xóa</button>
+                </form>
+            }
+        </div>
+        
+    }
+</section>
+
+
+
+
+
+
+<!--gợi ý bài viết-->
+<div class="otherpost-box">
+    <h4>
+        Các bài viết mới
+    </h4>
+    @foreach (var post in postmoi)
+    {
+        <hr />
+        <div class="otherpost-box-description">
+            <a asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug ">
+                @post.Title
+            </a>
+        </div>
+    }
+</div>
+
+
+
+<!--Jquerry link-->
+<script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+        crossorigin="anonymous"></script>
+
+
+
+
+@section Sidebar {
+    @await Component.InvokeAsync("HocAspMVC4_Test.Views.Shared.Components.CategorySidebar.CategorySidebar", new CategorySidebar.CategorySibarData()
+     {
+         Categories = categories,
+         level = 0,
+         categoryslug = category.Slug
+     })
+    <div class="otherpost-box">
+        <h6 style="font-weight: 600">
+            <a asp-controller="ViewPost" asp-action="Index" asp-route-categoryslug="">
+                Bài cùng chuyên mục
+            </a>
+        </h6>
+
+        @foreach (var post in otherPosts)
+        {
+            <hr />
+            <div class="otherpost-box-description">
+                <a asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug ">
+                    @post.Title
+                </a>
+            </div>
+        }
+    </div>
+}
+

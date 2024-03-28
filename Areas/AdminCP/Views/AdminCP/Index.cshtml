@@ -1,0 +1,16 @@
+﻿
+@using HocAspMVC4_Test.Menu
+
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Admin control panel";
+}
+
+<p>Quản trị website</p>
+
+@section Sidebar{
+    @Html.Raw(@_AdminSidebarService.renderHtml())
+}
+

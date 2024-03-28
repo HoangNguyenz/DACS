@@ -1,0 +1,118 @@
+body {
+  background: #fff;
+  color: #1d1d1f;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+.app-navbar {
+  background: #122153;
+}
+.app-navbar .text-dark {
+  color: #ffcc80 !important;
+  font-family: cursive;
+}
+.app-navbar .text-dark:hover {
+  color: white !important;
+}
+.app-navbar .navbar-brand {
+  color: #ffcc80;
+  font-family: cursive;
+}
+.app-navbar .navbar-brand:hover {
+  color: white !important;
+}
+.app-navbar .dropdown-toggle {
+  border-color: #ffcc80;
+  color: #ffcc80;
+}
+
+.categorysidebar ul, .categorysidebar li {
+  list-style: none;
+  padding-left: 10px;
+}
+.categorysidebar a {
+  text-decoration: none;
+}
+.categorysidebar a:hover {
+  color: #ffcc80;
+}
+.categorysidebar a.active {
+  color: red;
+}
+.categorysidebar > ul > li > a {
+  font-weight: bold;
+}
+.categorysidebar h3 {
+  text-transform: uppercase;
+  font-size: 1.3em;
+  border-bottom: 1px solid blue;
+  padding-bottom: 10px;
+}
+
+.contact-firstcol {
+  background-color: #122153;
+  color: #ffcc80;
+  text-align: center;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.contact-firstcol h4 {
+  line-height: 30px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+.contact-firstcol img {
+  max-width: 100px;
+}
+
+.formcontact label {
+  font-weight: 700;
+}
+.formcontact .btn-primary {
+  background-color: #122153 !important;
+}
+
+.app-footer {
+  background: #080A10;
+  color: white;
+  text-align: center;
+}
+
+.detailpost h1 {
+  font-weight: 600;
+}
+.detailpost .sapo {
+  font-style: italic;
+}
+.detailpost img {
+  max-width: 100%;
+}
+
+.photodetail {
+  position: relative;
+}
+.photodetail span {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  display: none;
+}
+.photodetail:hover span {
+  display: block;
+}

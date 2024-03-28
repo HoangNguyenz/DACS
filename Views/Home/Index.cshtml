@@ -1,0 +1,275 @@
+﻿
+
+@{
+    ViewData["Title"] = "Trang chủ";
+
+    var posts = ViewBag.posts as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+    var posttake1first = ViewBag.posttake1first as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+    var postLuotXemNhieu = ViewBag.postLuotXemNhieu as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+    var postPhimTake = ViewBag.postPhimTake as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+    var postSachTake = ViewBag.postSachTake as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+    var postSearch = ViewBag.postSearch as IQueryable<HocAspMVC4_Test.Models.Blog.Post>;
+}
+
+<partial name="_AlertMessage" />
+
+
+<section class="home" id="home">
+    <div class="home-text container">
+        <h2 class="home-title">Coffee Blog</h2>
+        <span class="home-subtitle">Tin tức chất lượng - Điểm tô tri thức</span>
+    </div>
+</section>
+
+
+@*Post tìm kiếm*@
+@if (postSearch != null)
+{
+    @foreach (var post in postSearch)
+    {
+        var srcImg = "/contents/nophoto.jpeg";
+        if (post.Photos.Any())
+        {
+            srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+        }
+        <section class="about container" id="about">
+            <div class="contentBx">
+                <h2 class="titleText">@post.Title</h2>
+                <p class="title-text">
+                    @post.Description
+                </p>
+                <a asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog" class="btn2">Đọc thêm</a>
+            </div>
+            <div class="imgBx">
+                <img class="fitBg"
+                     src="@srcImg"
+                     alt="" />
+            </div>
+        </section>
+    }
+}
+
+
+
+
+
+
+@*Post mới nhất*@
+@if (posttake1first != null)
+{
+    @foreach (var post in posttake1first)
+    {
+        var srcImg = "/contents/nophoto.jpeg";
+        if (post.Photos.Any())
+        {
+            srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+        }
+        <section class="about container" id="about">
+            <div class="contentBx">
+                <h2 class="titleText">@post.Title</h2>
+                <p class="title-text">
+                    @post.Description
+                </p>
+                <a asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog" class="btn2">Đọc thêm</a>
+            </div>
+            <div class="imgBx">
+                <img class="fitBg"
+                     src="@srcImg"
+                     alt="" />
+            </div>
+        </section>
+    }
+}
+
+
+
+<div class="post-filter container">
+    <span class="filter-item active-filter" data-filter='all'>All</span>
+    <span class="filter-item" data-filter='VH'>Văn hóa</span>
+    <span class="filter-item" data-filter='TT'>Thể thao</span>
+    <span class="filter-item" data-filter='CN'>Công nghệ</span>
+</div>
+
+
+
+
+<!--Posts -->
+@if (posts != null)
+{
+    <h3 class="h3trend">
+        #TRENDING
+    </h3>
+    <section class="post container ">
+        @foreach (var post in posts)
+        {
+            var tieude = @post.PostCategories.FirstOrDefault()?.Category.Title;
+            if (tieude == "Văn hóa Nhật Bản")
+            {
+                tieude = "VH";
+            }
+            if (tieude == "Công Nghệ")
+            {
+                tieude = "CN";
+            }
+            if (tieude == "Thể Thao")
+            {
+                tieude = "TT";
+            }
+
+            var srcImg = "/contents/nophoto.jpeg";
+            if (post.Photos.Any())
+            {
+                srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+            }
+
+            <div class="post-box @tieude">
+                <img src="@srcImg"
+                     alt="" class="custom-post-img">
+                <h2 class="category">@post.PostCategories.FirstOrDefault()?.Category.Title</h2>
+                <a class="custom-post-title" asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog">
+                    @post.Title
+                </a>
+                <span class="custom-post-date">@post.DateUpdated.ToShortDateString()</span>
+                <p> Lượt xem: @post.ViewCount</p>
+                <p class="custom-post-description">@post.Description</p>
+                <!--Profile -->
+                <div class="custom-profile">
+                    <img src="https://images.unsplash.com/photo-1661956601031-4cf09efadfce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60"
+                         alt="" class="custom-profile-img">
+                    <span class="custom-profile-name">@post.Author.UserName</span>
+                </div>
+            </div>
+        }
+    </section>
+}
+
+
+
+
+@*Post đọc nhiều*@
+@if (postLuotXemNhieu != null)
+{
+    <h3 class="h3docnhieu">
+        #BÀI ĐỌC NHIỀU
+    </h3>
+    <section class="post container">
+        @foreach (var post in postLuotXemNhieu)
+        {
+            var srcImg = "/contents/nophoto.jpeg";
+            if (post.Photos.Any())
+            {
+                srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+            }
+
+            <div class="custom-post-box">
+                <img src="@srcImg"
+                     alt="" class="custom-post-img">
+                <h2 class="category">@post.PostCategories.FirstOrDefault()?.Category.Title</h2>
+                <a class="custom-post-title" asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog">
+                    @post.Title
+                </a>
+                <span class="custom-post-date">@post.DateUpdated.ToShortDateString()</span>
+                <p> Lượt xem: @post.ViewCount</p>
+                <p class="custom-post-description">@post.Description</p>
+                <!--Profile -->
+                <div class="custom-profile">
+                    <img src="https://images.unsplash.com/photo-1661956601031-4cf09efadfce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60"
+                         alt="" class="custom-profile-img">
+                    <span class="custom-profile-name">@post.Author.UserName</span>
+                </div>
+            </div>
+
+        }
+
+    </section>
+}
+
+
+
+@*Post phim*@
+@if (postPhimTake != null)
+{
+    <h3 class="h3dienanh">
+        #TIN ĐIỆN ẢNH
+    </h3>
+    <section class="post container">
+        @foreach (var post in postPhimTake)
+        {
+            var srcImg = "/contents/nophoto.jpeg";
+            if (post.Photos.Any())
+            {
+                srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+            }
+
+            <div class="custom-post-box">
+                <img src="@srcImg"
+                     alt="" class="custom-post-img">
+                <h2 class="category">@post.PostCategories.FirstOrDefault()?.Category.Title</h2>
+                <a class="custom-post-title" asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog">
+                    @post.Title
+                </a>
+                <span class="custom-post-date">@post.DateUpdated.ToShortDateString()</span>
+                <p> Lượt xem: @post.ViewCount</p>
+                <p class="custom-post-description">@post.Description</p>
+                <!--Profile -->
+                <div class="custom-profile">
+                    <img src="https://images.unsplash.com/photo-1661956601031-4cf09efadfce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60"
+                         alt="" class="custom-profile-img">
+                    <span class="custom-profile-name">@post.Author.UserName</span>
+                </div>
+            </div>
+        }
+
+    </section>
+
+}
+
+
+@*Post sách*@
+@if (postSachTake != null)
+{
+    <h3 class="h3sach">
+        #REVIEW SÁCH
+    </h3>
+    <section class="custom-post container">
+        @foreach (var post in postSachTake)
+        {
+
+            var srcImg = "/contents/nophoto.jpeg";
+            if (post.Photos.Any())
+            {
+                srcImg = $"/contents/BlogPhoto/{post.Photos.FirstOrDefault().FileName}";
+            }
+            <div class="custom-post-box">
+                <img src="@srcImg"
+                     alt="" class="custom-post-img">
+                <h2 class="category">@post.PostCategories.FirstOrDefault()?.Category.Title</h2>
+                <a class="custom-post-title" asp-controller="ViewPost" asp-action="Details" asp-route-postslug="@post.Slug" asp-area="Blog">
+                    @post.Title
+                </a>
+                <span class="custom-post-date">@post.DateUpdated.ToShortDateString()</span>
+                <p> Lượt xem: @post.ViewCount</p>
+                <p class="custom-post-description">@post.Description</p>
+                <!--Profile -->
+                <div class="custom-profile">
+                    <img src="https://images.unsplash.com/photo-1661956601031-4cf09efadfce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHw2Mnx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=60"
+                         alt="" class="custom-profile-img">
+                    <span class="custom-profile-name">@post.Author.UserName</span>
+                </div>
+            </div>
+
+        }
+
+    </section>
+}
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.3.js"
+        integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+        crossorigin="anonymous"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+<!--Link Swiper JS-->
